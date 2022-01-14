@@ -5,6 +5,15 @@ import java.security.cert.X509Certificate;
 import java.security.KeyStore;
 import java.security.cert.*;
 
+/*
+ * This example shows how to set up a key manager to perform client
+ * authentication.
+ *
+ * This program assumes that the client is not inside a firewall.
+ * The application can be modified to connect to a server outside
+ * the firewall by following SSLSocketClientWithTunneling.java.
+ */
+
 public class client {
   public static void main(String[] args) throws Exception {
     String host = null;
@@ -46,6 +55,13 @@ public class client {
       }
       SSLSocket socket = (SSLSocket)factory.createSocket(host, port);
       System.out.println("\nsocket before handshake:\n" + socket + "\n");
+
+      /*
+       * send http request
+       *
+       * See SSLSocketClient.java for more information about why
+       * there is a forced handshake here when using PrintWriters.
+       */
 
       socket.startHandshake();
       SSLSession session = socket.getSession();
