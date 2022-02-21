@@ -1,7 +1,7 @@
 public class ActionAuthenticator {
 	private Logger logger;
 	
-	public Authenticator(String filename) {
+	public void ActionAuthenticator(String filename) {
 		logger = new Logger(filename);
 	}
 	
