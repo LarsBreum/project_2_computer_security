@@ -9,8 +9,9 @@ public class ActionAuthenticator {
 	
 	}
 	
-	public canList() {
-	
+	public canList(Person p) {
+		String name = p.getName();
+		String role = p.getRole();
 	}
 	
 	public canRead() {
