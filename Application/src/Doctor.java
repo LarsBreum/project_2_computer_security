@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import java.util.List;
 
 public class Doctor extends Person {
@@ -15,5 +14,3 @@ public class Doctor extends Person {
 		list.add(patient);
 	}
 }
-=======
->>>>>>> 2f31e4f7d344fb82eecc7574c2244f02eab516fa
