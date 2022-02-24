@@ -5,9 +5,9 @@ public class Journal {
 	private Map<String, String> entries;
 	private String ssnOfOwner;
 	
-	public Journal() {
+	public Journal(String ssn) {
 		this.entries = new TreeMap<String, String>();
-		this.ssnOfOwner =  "";
+		this.ssnOfOwner =  ssn;
 	}
 	
 	public void newEntry(String dateTime, String nurse) {
@@ -24,10 +24,6 @@ public class Journal {
 	
 	public String getEntry(String dateTime) {
 		return entries.get(dateTime);
-	}
-	
-	public void enterSsn(String ssn) {
-		ssnOfOwner = ssn;
 	}
 	
 	public String getSsn() {

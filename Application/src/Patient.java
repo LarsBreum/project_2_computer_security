@@ -6,7 +6,7 @@ public class Patient extends Person {
 	public Patient(String name, String ssn, String role, String division) {		
 		super(name, ssn, role);
 		this.division = division;
-		this.journal = new Journal();
+		this.journal = new Journal(ssn);
 	}
 	
 }

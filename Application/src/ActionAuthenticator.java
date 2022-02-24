@@ -7,13 +7,17 @@ public class ActionAuthenticator {
 		logger = new Logger(filename);
 	}
 	
-	public boolean canCreate(Person p) {
-		if(p instanceof  Doctor) {
-			return true;
-		}
-		else {
+	//Only doctor can create new entry and the patient must be in the Doctors assocation list
+	public boolean canCreate(Person p, Journal j) {
+		if(p instanceof Doctor) {
+			for(Patient patient : ((Doctor) p).getList()) {
+				if(patient.getSsn() == j.getSsn()) {
+					return true;
+				}
+			}
 			return false;
 		}
+		return false;
 	}
 	
 	public void canList(Person p) {
@@ -63,9 +67,8 @@ public class ActionAuthenticator {
 				}
 			}
 			return false;
-		}
-		
-		//Patient and Government can NEVER read
+		}	
+		//Patient and Government can NEVER write
 		if(p instanceof Patient) {
 			return false;
 		}
