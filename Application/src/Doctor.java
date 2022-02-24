@@ -13,4 +13,8 @@ public class Doctor extends Person {
 		nurse.addAsso(patient);
 		list.add(patient);
 	}
+	
+	public List<Patient> getList() {
+		return list;
+	}
 }

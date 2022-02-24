@@ -2,11 +2,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Journal {
-	Map<String, String> entries;
-	
+	private Map<String, String> entries;
+	private String ssnOfOwner;
 	
 	public Journal() {
 		this.entries = new TreeMap<String, String>();
+		this.ssnOfOwner =  "";
 	}
 	
 	public void newEntry(String dateTime, String nurse) {
@@ -22,6 +23,14 @@ public class Journal {
 	}
 	
 	public String getEntry(String dateTime) {
-		return dateTime;
+		return entries.get(dateTime);
+	}
+	
+	public void enterSsn(String ssn) {
+		ssnOfOwner = ssn;
+	}
+	
+	public String getSsn() {
+		return ssnOfOwner;
 	}
 }

@@ -19,6 +19,10 @@ public class Person {
 		return ssn;
 	}
 	
+	public String getRole() {
+		return role;
+	}
+	
 	public String toString() {
 		//StringBuilder sb = new StringBuilder();
 		return "Role: "+ role + "Name: " + name + ", ssn: " + ssn;
