@@ -75,6 +75,7 @@ public class client {
        */
 
       socket.startHandshake();
+      
       SSLSession session = socket.getSession();
       Certificate[] cert = session.getPeerCertificates();
       String subject = ((X509Certificate) cert[0]).getSubjectX500Principal().getName();
