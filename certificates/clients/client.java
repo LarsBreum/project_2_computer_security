@@ -16,6 +16,7 @@ import java.io.Console;
  */
 
 public class client {
+  
   public static void main(String[] args) throws Exception {
     String host = null;
     int port = -1;
@@ -52,18 +53,20 @@ public class client {
         SSLContext ctx = SSLContext.getInstance("TLSv1.2");
         // keystore password (storepass)
         try {
-          keyStore.load(new FileInputStream(("./certificates/") + keyStoreName), password);
-          trustStore.load(new FileInputStream("./certificates") + trustStoreName), password);
-          kmf.init(keyStore,password);
+          keyStore.load(new FileInputStream("./certificates/" + keyStoreName), password);
+          trustStore.load(new FileInputStream("./certificates" + trustStoreName), password);
+          kmf.init(keyStore, password);
           tmf.init(keyStore);
           ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
           factory = ctx.getSocketFactory();
+        } catch (Exception e) {
+          throw new IOException((e.getMessage()));
         }
-        catch (Exception e) {
-          throw new IOException((e.getMessage());
-          return;
-        }
-        
+      }
+      catch (Exception e) {
+        System.out.println("Wrong password, or not trusted");
+        return;
+      }
       SSLSocket socket = (SSLSocket)factory.createSocket(host, port);
       System.out.println("\nsocket before handshake:\n" + socket + "\n");
 
@@ -103,8 +106,10 @@ public class client {
       out.close();
       read.close();
       socket.close();
-    } catch (Exception e) {
+      }
+    catch (Exception e) {
       e.printStackTrace();
     }
   }
 }
+
