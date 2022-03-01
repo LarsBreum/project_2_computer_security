@@ -22,11 +22,15 @@ public class server implements Runnable {
       SSLSession session = socket.getSession();
       Certificate[] cert = session.getPeerCertificates();
       String subject = ((X509Certificate) cert[0]).getSubjectX500Principal().getName();
+      String issuer = ((X509Certificate) cert[0]).getIssuerX500Principal().getName();
+      String serial = ((X509Certificate) cert[0]).getSerialNumber().toString();
       numConnectedClients++;
       System.out.println("client connected");
       System.out.println("client name (cert subject DN field): " + subject);
+      System.out.println("issuer: " + issuer);
+      System.out.println("Serial: " + serial);
       System.out.println(numConnectedClients + " concurrent connection(s)\n");
-
+      
       PrintWriter out = null;
       BufferedReader in = null;
       out = new PrintWriter(socket.getOutputStream(), true);
@@ -80,8 +84,8 @@ public class server implements Runnable {
         SSLContext ctx = SSLContext.getInstance("TLSv1.2");
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
         TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-        KeyStore ks = KeyStore.getInstance("PKCS12");
-        KeyStore ts = KeyStore.getInstance("PKCS12");
+        KeyStore ks = KeyStore.getInstance("JKS");
+        KeyStore ts = KeyStore.getInstance("JKS");
         char[] password = "password".toCharArray();
         // keystore password (storepass)
         ks.load(new FileInputStream("serverkeystore"), password);  

@@ -53,8 +53,8 @@ public class client {
         SSLContext ctx = SSLContext.getInstance("TLSv1.2");
         // keystore password (storepass)
         try {
-          keyStore.load(new FileInputStream("./certificates/" + keyStoreName), password);
-          trustStore.load(new FileInputStream("./certificates" + trustStoreName), password);
+          keyStore.load(new FileInputStream("../" + keyStoreName), password);
+          trustStore.load(new FileInputStream("../" + trustStoreName), password);
           kmf.init(keyStore, password);
           tmf.init(keyStore);
           ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
