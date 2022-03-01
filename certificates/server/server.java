@@ -11,6 +11,14 @@ public class server implements Runnable {
   private static int numConnectedClients = 0;
   
   public server(ServerSocket ss) throws IOException {
+    Person alice = new Patient("Alice Anderrsson", "0001011234", "Patient", "ER");
+		Person bob = new Nurse("Bob Larsson", "0102035678", "Nurse", "ER");
+		Person phil = new Doctor("Dr. Phil", "9998979876", "Doctor", "ER");
+		Person sam = new GovernmentRep("Sam", "0127630000", "GovernmentRep");
+
+
+
+
     serverSocket = ss;
     newListener();
   }
