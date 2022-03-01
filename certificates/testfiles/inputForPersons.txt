@@ -1,0 +1,4 @@
+Phil;19970521-1234;Doctor;ER;
+Alice;20021212-1234;GovernmentRpe;
+Bob;19850101-1111;Nurse;ER
+Sam;19461010-0001;Patient;ER
