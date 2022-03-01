@@ -3,30 +3,25 @@ import java.util.TreeMap;
 
 public class Journal {
 	private Map<String, String> entries;
-	private String ssnOfOwner;
 	
-	public Journal(String ssn) {
+	public Journal() {
 		this.entries = new TreeMap<String, String>();
-		this.ssnOfOwner =  ssn;
 	}
 	
 	public void newEntry(String dateTime, String nurse) {
-		
+		entries.put(dateTime, nurse);
 	}
 	
 	public void editEntry(String dateTime, String newString) {
-		
+		entries.replace(dateTime, newString);
 	}
 	
 	public void deleteEntry(String date) {
-		
+		entries.remove(date);
 	}
 	
 	public String getEntry(String dateTime) {
 		return entries.get(dateTime);
 	}
 	
-	public String getSsn() {
-		return ssnOfOwner;
-	}
 }

@@ -8,14 +8,9 @@ public class ActionAuthenticator {
 	}
 	
 	//Only doctor can create new entry and the patient must be in the Doctors assocation list
-	public boolean canCreate(Person p, Journal j) {
+	public boolean canCreate(Person p, Patient patient) {
 		if(p instanceof Doctor) {
-			for(Patient patient : ((Doctor) p).getList()) {
-				if(patient.getSsn() == j.getSsn()) {
-					return true;
-				}
-			}
-			return false;
+			return ((Doctor) p).getList().contains(patient);
 		}
 		return false;
 	}
@@ -25,48 +20,34 @@ public class ActionAuthenticator {
 		String role = p.getRole();
 	}
 	
-	public boolean canRead(Person p, Journal j, Division d) {
+	public boolean canRead(Person p, Patient patient) {
 		//Government can always read.
 		if(p instanceof GovernmentRep) {
 			return true;
 		}	
 		//If the patients ssn is the same as the ssn in the journal they can read. 
-		if(p instanceof Patient) {
-			if(p.getSsn() == j.getSsn()) {
-			return true;
-			}
-			return false;
+		if(p instanceof Patient) {		
+			return p.getSsn() == patient.getSsn();
 		}	
 		//If the nurse is in the division return true 
 		if(p instanceof Nurse) {
-			return d.getMembers().contains(p);
+			return p.getDivision() == patient.getDivision();
 		}		
 		//Same as above but with doctor
 		if(p instanceof Doctor) {
-			return d.getMembers().contains(p);
+			return p.getDivision() == patient.getDivision();
 		}		
 		return false;
 	}
 	
-	public boolean canWrite(Person p, Journal j) {
-		
+	public boolean canWrite(Person p, Patient patient) {	
 		//If the nurse has a patient in it's association list with the same ssn as the journal return true 
 		if(p instanceof Nurse) {
-			for(Patient patient : ((Nurse) p).getList()) {
-				if(patient.getSsn() == j.getSsn()) {
-					return true;
-				}
-			}
-			return false;
+			return ((Nurse) p).getList().contains(patient);
 		}		
 		//Same as above but with doctor
 		if(p instanceof Doctor) {
-			for(Patient patient : ((Doctor) p).getList()) {
-				if(patient.getSsn() == j.getSsn()) {
-					return true;
-				}
-			}
-			return false;
+			return ((Doctor) p).getList().contains(patient);
 		}	
 		//Patient and Government can NEVER write
 		if(p instanceof Patient) {
@@ -75,7 +56,6 @@ public class ActionAuthenticator {
 		if(p instanceof GovernmentRep) {
 			return false;
 		}
-		
 		return false;
 	}
 	

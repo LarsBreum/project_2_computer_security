@@ -1,11 +1,10 @@
 import java.util.List;
 
 public class Nurse extends Person{
-	private String division;
 	private List<Patient> list;
 	
-	public Nurse(String division, String name, String ssn, String role) {
-		super(name, ssn, role);
+	public Nurse(String name, String ssn, String role, String division) {
+		super(name, ssn, role, division);
 		this.division = division;
 	}
 	

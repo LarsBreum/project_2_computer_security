@@ -1,12 +1,10 @@
 import java.util.List;
 
 public class Doctor extends Person {
-	private String division;
 	private List<Patient> list;
 	
-	public Doctor(String division, String name, String ssn, String role) {
-		super(name, ssn, role);
-		this.division = division;
+	public Doctor( String name, String ssn, String role, String division) {
+		super(name, ssn, role, division);
 	}
 	
 	public void createAsso(Patient patient, Nurse nurse) {
