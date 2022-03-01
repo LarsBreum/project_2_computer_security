@@ -4,6 +4,7 @@ import javax.net.ssl.*;
 import java.security.cert.X509Certificate;
 import java.security.KeyStore;
 import java.security.cert.*;
+import java.io.Console;
 
 /*
  * This example shows how to set up a key manager to perform client
@@ -36,23 +37,33 @@ public class client {
     try {
       SSLSocketFactory factory = null;
       try {
-        char[] password = "password".toCharArray();
-        KeyStore ks = KeyStore.getInstance("JKS");
-        KeyStore ts = KeyStore.getInstance("JKS");
+        Console cons = System.console();
+        System.out.println("Welcome to very good hospital system");
+        System.out.println("Keystore name?");
+        String keyStoreName = cons.readLine();
+        System.out.println("Truststore name?");
+        String trustStoreName = cons.readLine();
+        System.out.println("Password?");
+        char[] password = cons.readPassword();
+        KeyStore keyStore = KeyStore.getInstance("JKS");
+        KeyStore trustStore = KeyStore.getInstance("JKS");
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
         TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
         SSLContext ctx = SSLContext.getInstance("TLSv1.2");
         // keystore password (storepass)
-        ks.load(new FileInputStream("clientkeystore"), password);  
-        // truststore password (storepass);
-        ts.load(new FileInputStream("clienttruststore"), password); 
-        kmf.init(ks, password); // user password (keypass)
-        tmf.init(ts); // keystore can be used as truststore here
-        ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
-        factory = ctx.getSocketFactory();
-      } catch (Exception e) {
-        throw new IOException(e.getMessage());
-      }
+        try {
+          keyStore.load(new FileInputStream(("./certificates/") + keyStoreName), password);
+          trustStore.load(new FileInputStream("./certificates") + trustStoreName), password);
+          kmf.init(keyStore,password);
+          tmf.init(keyStore);
+          ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+          factory = ctx.getSocketFactory();
+        }
+        catch (Exception e) {
+          throw new IOException((e.getMessage());
+          return;
+        }
+        
       SSLSocket socket = (SSLSocket)factory.createSocket(host, port);
       System.out.println("\nsocket before handshake:\n" + socket + "\n");
 
