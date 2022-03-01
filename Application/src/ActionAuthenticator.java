@@ -5,13 +5,19 @@ public class ActionAuthenticator {
 	
 	public void ActionAuthenticator(String filename) {
 		logger = new Logger(filename);
+		Patient alice = new Patient("Alice", "0001011234", "Patient", "ER");
+		Nurse bob = new Nurse("Bob", "0102035678", "Nurse", "ER");
+		Doctor phil = new Doctor("Phil", "9998979876", "Doctor", "ER");
+		GovernmentRep sam = new GovernmentRep("Sam", "0127630000", "GovernmentRep");
 	}
 	
 	//Only doctor can create new entry and the patient must be in the Doctors assocation list
 	public boolean canCreate(Person p, Patient patient) {
 		if(p instanceof Doctor) {
+			logger.log(p.getRole() + " " + p.getName() + " created a new record for patient " + patient.getName());
 			return ((Doctor) p).getList().contains(patient);
 		}
+		logger.log(role + " " + name + " tried to create a new record for patient " + patient.getName() + " but was denied");
 		return false;
 	}
 	
