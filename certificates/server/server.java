@@ -5,24 +5,89 @@ import javax.net.ssl.*;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
+import Application.*;
+
 
 public class server implements Runnable {
   private ServerSocket serverSocket = null;
   private static int numConnectedClients = 0;
+  private List<Person> persons;
+  private List<Journal> journals;
+  private ActionAuthenticator authenticator = new ActionAuthenticator();
   
   public server(ServerSocket ss) throws IOException {
-    Person alice = new Patient("Alice Anderrsson", "0001011234", "Patient", "ER");
-		Person bob = new Nurse("Bob Larsson", "0102035678", "Nurse", "ER");
-		Person phil = new Doctor("Dr. Phil", "9998979876", "Doctor", "ER");
-		Person sam = new GovernmentRep("Sam", "0127630000", "GovernmentRep");
-
-
-
-
     serverSocket = ss;
     newListener();
+    persons = new ArrayList<>();
+    journals = new ArrayList<>();
   }
-
+  
+  private void loadPersons(){
+    //All the persons(instead of a database)
+    Patient alice = new Patient("Alice", "0001011234", "Patient", "ER");
+    Nurse bob = new Nurse("Bob", "0102035678", "Nurse", "ER");
+    Doctor phil = new Doctor("Phil", "9998979876", "Doctor", "ER");
+    GovernmentRep sam = new GovernmentRep("Sam", "0127630000", "GovernmentRep");
+    
+    persons.add(alice);
+    persons.add(bob);
+    persons.add(phil);
+    persons.add(sam);
+    
+    journals.add(alice.getJournal());
+  }
+  
+  private String actionHandler(String message, Person p, BufferedReader in, PrintWriter out){
+    String[] words = message.split(" ");
+    switch(words[0]){
+      case "read":
+        try{
+          Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
+          Journal reqJournal = recPatient.getJournal();
+          if(reqJournal!=null && authenticator.canRead(p, recPatient)){
+            return "You can read!";
+          }
+          else{
+            return "No reading access!";
+          }
+        }
+        catch (NumberFormatException e){
+          return "The second argument needs to be a number.";
+        }
+      case "write":
+        try{
+          Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
+          Journal reqJournal = recPatient.getJournal();
+          if(reqJournal!=null && authenticator.canWrite(p, recPatient)){
+            return "You can write!";
+          }
+          else{
+            return "No writing access!";
+          }
+        }
+        catch(NumberFormatException e){
+          return "The second argument needs to be a number.";
+        }
+      case "delete":
+        try{
+          Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
+          Journal reqJournal = recPatient.getJournal();
+          if(reqJournal!=null && authenticator.canDelete(p, recPatient)){
+            return "You can Delete!";
+          }
+          else{
+            return "No deleting access!";
+          }
+        }
+        catch(NumberFormatException e) {
+          return "The second argument needs to be a number.";
+        }
+    }
+    return "hej";
+  }
+  
   public void run() {
     try {
       SSLSocket socket=(SSLSocket)serverSocket.accept();
@@ -30,22 +95,50 @@ public class server implements Runnable {
       SSLSession session = socket.getSession();
       Certificate[] cert = session.getPeerCertificates();
       String subject = ((X509Certificate) cert[0]).getSubjectX500Principal().getName();
+      String issuer = ((X509Certificate) cert[0]).getIssuerX500Principal().getName();
+      String serial = ((X509Certificate) cert[0]).getSerialNumber().toString();
       numConnectedClients++;
+      
+      int i = 0;
+      boolean isFound = false;
+      Person currentClient = null;
+      loadPersons();
+      
+      while (!isFound && i<persons.size()) {
+        Person p = persons.get(i);
+        if (p.getName().equals(subject)) {
+          currentClient = p;
+          isFound = true;
+        }
+        i++;
+      }
+      
+      if (!isFound) {
+        socket.close();
+        numConnectedClients--;
+        System.out.println("invalid login");
+        //Här vill vi kasta ut klienten, just nu händer inget för klienten. Den får dock ingen åtkomst.
+        return;
+      }
+      
       System.out.println("client connected");
       System.out.println("client name (cert subject DN field): " + subject);
+      System.out.println("issuer: " + issuer);
+      System.out.println("Serial: " + serial);
       System.out.println(numConnectedClients + " concurrent connection(s)\n");
-
+      
       PrintWriter out = null;
       BufferedReader in = null;
       out = new PrintWriter(socket.getOutputStream(), true);
       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+      
       String clientMsg = null;
       while ((clientMsg = in.readLine()) != null) {
-        String rev = new StringBuilder(clientMsg).reverse().toString();
-        System.out.println("received '" + clientMsg + "' from client");
-        System.out.print("sending '" + rev + "' to client...");
-        out.println(rev);
+        String response = actionHandler(clientMsg, currentClient, in, out);
+        //String rev = new StringBuilder(clientMsg).reverse().toString();
+        //System.out.println("received '" + clientMsg + "' from client");
+        //System.out.print("sending '" + rev + "' to client...");
+        out.println(response);
         out.flush();
         System.out.println("done\n");
       }
@@ -80,7 +173,7 @@ public class server implements Runnable {
       e.printStackTrace();
     }
   }
-
+  
   private static ServerSocketFactory getServerSocketFactory(String type) {
     if (type.equals("TLSv1.2")) {
       SSLServerSocketFactory ssf = null;
@@ -88,13 +181,13 @@ public class server implements Runnable {
         SSLContext ctx = SSLContext.getInstance("TLSv1.2");
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
         TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-        KeyStore ks = KeyStore.getInstance("PKCS12");
-        KeyStore ts = KeyStore.getInstance("PKCS12");
+        KeyStore ks = KeyStore.getInstance("JKS");
+        KeyStore ts = KeyStore.getInstance("JKS");
         char[] password = "password".toCharArray();
         // keystore password (storepass)
-        ks.load(new FileInputStream("serverkeystore"), password);  
+        ks.load(new FileInputStream("serverkeystore"), password);
         // truststore password (storepass)
-        ts.load(new FileInputStream("servertruststore"), password); 
+        ts.load(new FileInputStream("servertruststore"), password);
         kmf.init(ks, password); // certificate password (keypass)
         tmf.init(ts);  // possible to use keystore as truststore here
         ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
