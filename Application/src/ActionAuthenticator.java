@@ -14,10 +14,15 @@ public class ActionAuthenticator {
 	//Only doctor can create new entry and the patient must be in the Doctors assocation list
 	public boolean canCreate(Person p, Patient patient) {
 		if(p instanceof Doctor) {
-			logger.log(p.getRole() + " " + p.getName() + " created a new record for patient " + patient.getName());
+			if(((Doctor) p).getList().contains(patient)) {
+				logger.log(p.getRole() + " " + p.getName() + " created a new record for patient " + patient.getName());
+			}
+			else {
+				logger.log(p.getRole() + " " + p.getName() + " tried to create a new record for patient " + patient.getName() + " but was denied");
+			}
 			return ((Doctor) p).getList().contains(patient);
 		}
-		logger.log(role + " " + name + " tried to create a new record for patient " + patient.getName() + " but was denied");
+		logger.log(p.getRole() + " " + p.getName() + " tried to create a new record for patient " + patient.getName() + " but was denied");
 		return false;
 	}
 	

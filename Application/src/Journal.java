@@ -24,4 +24,8 @@ public class Journal {
 		return entries.get(dateTime);
 	}
 	
+	public String toString() {
+		return "Hej här är en journal!";
+	}
+	
 }
