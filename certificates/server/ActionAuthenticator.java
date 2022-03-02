@@ -3,7 +3,7 @@ import java.util.List;
 public class ActionAuthenticator {
 	private Logger logger;
 	
-	public void ActionAuthenticator(String filename) {
+	public ActionAuthenticator(String filename) {
 		logger = new Logger(filename);
 		Patient alice = new Patient("Alice", "0001011234", "Patient", "ER");
 		Nurse bob = new Nurse("Bob", "0102035678", "Nurse", "ER");
@@ -39,13 +39,13 @@ public class ActionAuthenticator {
 		}	
 		//If the patients ssn is the same as the ssn in the journal they can read. 
 		if(p instanceof Patient) {		
-			if(p.getSsn() == patient.getSsn()) {
+			if(p.getSsn().equals(patient.getSsn())) {
 				logger.log(p.getRole() + " " + p.getName() + "read own journal");
 			}
 			else {
 				logger.log(p.getRole() + " " + p.getName() + " tried to read journal of  " + patient.getName() + " but was denied");
 			}
-			return p.getSsn() == patient.getSsn();
+			return p.getSsn().equals(patient.getSsn());
 		}	
 		//If the nurse is in the division return true 
 		if(p instanceof Nurse) {

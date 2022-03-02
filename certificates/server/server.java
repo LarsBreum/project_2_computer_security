@@ -14,7 +14,7 @@ public class server implements Runnable {
   private static int numConnectedClients = 0;
   private List<Person> persons;
   private List<Journal> journals;
-  private ActionAuthenticator authenticator = new ActionAuthenticator();
+  private ActionAuthenticator authenticator = new ActionAuthenticator("./log.txt");
   
   public server(ServerSocket ss) throws IOException {
     serverSocket = ss;
@@ -45,6 +45,7 @@ public class server implements Runnable {
         try{
           Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
           Journal reqJournal = recPatient.getJournal();
+          System.out.println(" P namn och recPatient namn" + " " + p.getName() + " " + recPatient.getName());
           if(reqJournal!=null && authenticator.canRead(p, recPatient)){
             return "You can read!";
           }
@@ -98,6 +99,9 @@ public class server implements Runnable {
       String serial = ((X509Certificate) cert[0]).getSerialNumber().toString();
       numConnectedClients++;
       
+      String subjectNameCN = subject.split(" ")[0];
+      String subjectName = subjectNameCN.substring(3, subjectNameCN.length());
+      
       int i = 0;
       boolean isFound = false;
       Person currentClient = null;
@@ -105,7 +109,7 @@ public class server implements Runnable {
       
       while (!isFound && i<persons.size()) {
         Person p = persons.get(i);
-        if (p.getName().equals(subject)) {
+        if (p.getName().equals(subjectName)) {
           currentClient = p;
           isFound = true;
         }
@@ -115,6 +119,7 @@ public class server implements Runnable {
       if (!isFound) {
         socket.close();
         numConnectedClients--;
+        System.out.println("subjectName: " + subjectName);
         System.out.println("invalid login");
         //Här vill vi kasta ut klienten, just nu händer inget för klienten. Den får dock ingen åtkomst.
         return;

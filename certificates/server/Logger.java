@@ -11,7 +11,7 @@ public class Logger {
 	private File file;
 	
 	public static void main(String[] args) {
-		Logger logger = new Logger("./test_files/log.txt");
+		Logger logger = new Logger("./log.txt");
 		logger.log("Tjabba");
 		logger.log("Tjosan");
 	}
