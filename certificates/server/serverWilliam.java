@@ -71,7 +71,7 @@ public class server implements Runnable {
         try{
           Patient recPatient = persons.get(Integer.parseInt(words[1]));
           Journal reqJournal = recPatient.getJournal();
-          if(reqJournal!=null && authenticator.canDelete(p)){
+          if(reqJournal!=null && authenticator.canDelete(p, recPaptient)){
             return "You can Delete!";
           }
           else{
