@@ -25,7 +25,7 @@ public class Journal {
 	}
 	
 	public String toString() {
-		return "Hej h‰r ‰r en journal!";
+		return "Hej h√§r √§r en journal!";
 	}
 	
 }
