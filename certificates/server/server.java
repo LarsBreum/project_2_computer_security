@@ -91,17 +91,25 @@ public class server implements Runnable {
             Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
             Journal reqJournal = recPatient.getJournal();
             if(reqJournal!=null && authenticator.canCreate(p, recPatient)){
-              return "You can Create new entry!";
+            	for(Person person : Persons) {
+            		if(person instanceof Nurse) {
+            			if(person.getDivison().equals(recPatient.getDivision())) {
+            				p.addAssoForNurse(recPatient, person);
+            	             return "You can Create new entry!";
+            			}
+            		}
+            	}
+            	return "No access to create new entry!";
             }
             else{
-              return "No deleting access!";
+              return "No access to create new entry!";
             }
       	}
       	catch{
             return "The second argument needs to be a number.";
       	}
     }
-    return "hej";
+    return "Incorrect input";
   }
   
   public void run() {
@@ -154,7 +162,7 @@ public class server implements Runnable {
       
       String clientMsg = null;
       while ((clientMsg = in.readLine()) != null) {
-        String response = actionHandler(clientMsg, currentClient, in, out);
+        String response = actionHandler(clientMsg, currentClient, in, out); //Kollar det client skriver in!
         //String rev = new StringBuilder(clientMsg).reverse().toString();
         //System.out.println("received '" + clientMsg + "' from client");
         //System.out.print("sending '" + rev + "' to client...");
