@@ -70,13 +70,10 @@ public class server implements Runnable {
       case "write":
         try{
           Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
+          String message = words[2];
           Journal reqJournal = recPatient.getJournal();
           if(reqJournal!=null && authenticator.canWrite(p, recPatient)){
-            System.out.println("Enter info: ");
-            Scanner scan = new Scanner(System.in);
-            String info = scan.next();
-            recPatient.getJournal().newEntry(info);
-            scan.close();
+            recPatient.getJournal().newEntry(message);
             return "You wrote to: " + recPatient.getName();
           }
           else{
