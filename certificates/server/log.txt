@@ -35,3 +35,23 @@
 2022-03-03 15:12:55 ; Nurse Bob tried to write in journal of  Pat but was denied
 2022-03-03 15:12:57 ; Nurse Bob wrote to journal of Alice
 2022-03-03 15:14:18 ; Nurse Bob read journal of patient Alice
+2022-03-03 15:21:17 ; Nurse Bob read journal of patient Alice
+2022-03-03 15:21:20 ; Nurse Bob tried to read journal of  Pat but was denied
+2022-03-03 15:22:01 ; Nurse Bob tried to write in journal of  Pat but was denied
+2022-03-03 15:22:04 ; Nurse Bob wrote to journal of Alice
+2022-03-03 15:22:08 ; Nurse Bob read journal of patient Alice
+2022-03-03 15:23:30 ; Patient Alice read own journal
+2022-03-03 15:23:34 ; Patient Alice tried to read journal of  Pat but was denied
+2022-03-03 15:24:27 ; Doctor Uncle read journal of patient Alice
+2022-03-03 15:24:30 ; Doctor Uncle tried to read journal of  Pat but was denied
+2022-03-03 15:25:52 ; Doctor Uncle tried to write in journal of  Pat but was denied
+2022-03-03 15:27:40 ; Doctor Uncle read journal of patient Alice
+2022-03-03 15:27:43 ; Doctor Uncle tried to read journal of  Pat but was denied
+2022-03-03 15:29:20 ; Doctor Uncle read journal of patient Alice
+2022-03-03 15:29:22 ; Doctor Uncle read journal of patient Pat
+2022-03-03 15:31:21 ; Doctor Uncle read journal of patient Alice
+2022-03-03 15:31:23 ; Doctor Uncle read journal of patient Pat
+2022-03-03 15:31:51 ; Doctor Uncle wrote to journal of Pat
+2022-03-03 15:31:57 ; Doctor Uncle wrote to journal of Alice
+2022-03-03 15:31:59 ; Doctor Uncle read journal of patient Alice
+2022-03-03 15:32:00 ; Doctor Uncle read journal of patient Pat

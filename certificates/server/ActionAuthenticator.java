@@ -47,7 +47,7 @@ public class ActionAuthenticator {
 			}
 			return p.getSsn().equals(patient.getSsn());
 		}	
-		//If the nurse is in the division return true 
+		//If the nurse is in the division return true
 		if(p instanceof Nurse) {
 			if(p.getDivision().equals(patient.getDivision())) {
 				logger.log(p.getRole() + " " + p.getName() + " read journal of patient " + patient.getName());
@@ -59,13 +59,13 @@ public class ActionAuthenticator {
 		}		
 		//Same as above but with doctor
 		if(p instanceof Doctor) {
-			if(p.getDivision().equals(patient.getDivision())) {
+			if(p.getDivision().equals(patient.getDivision()) || ((Doctor) p).getList().contains(patient)) {
 				logger.log(p.getRole() + " " + p.getName() + " read journal of patient " + patient.getName());
 			}
 			else {
 				logger.log(p.getRole() + " " + p.getName() + " tried to read journal of  " + patient.getName() + " but was denied");
 			}
-			return p.getDivision().equals(patient.getDivision());
+			return (p.getDivision().equals(patient.getDivision()) || ((Doctor) p).getList().contains(patient));
 		}		
 		return false;
 	}

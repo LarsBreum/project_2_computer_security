@@ -44,7 +44,7 @@ public class server implements Runnable {
 
     uncle.createAsso(alice); //alice blir patient till uncle
     bob.addAsso(alice);
-    phil.createAsso(pat);
+    uncle.createAsso(pat);
     
   }
   
@@ -70,10 +70,10 @@ public class server implements Runnable {
       case "write":
         try{
           Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
-          String message = words[2];
+          String info = words[2];
           Journal reqJournal = recPatient.getJournal();
           if(reqJournal!=null && authenticator.canWrite(p, recPatient)){
-            recPatient.getJournal().newEntry(message);
+            recPatient.getJournal().newEntry(info);
             return "You wrote to: " + recPatient.getName();
           }
           else{
