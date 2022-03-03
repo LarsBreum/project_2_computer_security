@@ -28,4 +28,5 @@ public class Journal {
 		return "Hej här är en journal!";
 	}
 	
+	
 }

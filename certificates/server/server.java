@@ -34,6 +34,8 @@ public class server implements Runnable {
     persons.add(bob);
     persons.add(phil);
     persons.add(sam);
+
+    phil.addAsso(alice); //alice blir patient till phil
     
     journals.add(alice.getJournal());
   }
@@ -84,6 +86,20 @@ public class server implements Runnable {
         catch(NumberFormatException e) {
           return "The second argument needs to be a number.";
         }
+      case "create"
+      	try {
+            Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
+            Journal reqJournal = recPatient.getJournal();
+            if(reqJournal!=null && authenticator.canCreate(p, recPatient)){
+              return "You can Create new entry!";
+            }
+            else{
+              return "No deleting access!";
+            }
+      	}
+      	catch{
+            return "The second argument needs to be a number.";
+      	}
     }
     return "hej";
   }

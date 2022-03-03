@@ -9,9 +9,12 @@ public class Doctor extends Person {
 		list = new ArrayList<>();
 	}
 	
-	public void createAsso(Patient patient, Nurse nurse) {
-		nurse.addAsso(patient);
+	public void createAsso(Patient patient) {
 		list.add(patient);
+	}
+	
+	public void createAssoForNurse(Patient patient, Nurse nurse) {
+		nurse.addAsso(patient);
 	}
 	
 	public List<Patient> getList() {
