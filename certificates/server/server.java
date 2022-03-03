@@ -43,10 +43,9 @@ public class server implements Runnable {
     persons.add(gr);
 
     uncle.createAsso(alice); //alice blir patient till uncle
+    bob.addAsso(alice);
     phil.createAsso(pat);
     
-    
-
   }
   
   private String actionHandler(String message, Person p, BufferedReader in, PrintWriter out){
@@ -58,7 +57,7 @@ public class server implements Runnable {
           Journal reqJournal = recPatient.getJournal();
           System.out.println(" P namn och recPatient namn" + " " + p.getName() + " " + recPatient.getName());
           if(reqJournal!=null && authenticator.canRead(p, recPatient)){
-            recPatient.getJournal().newEntry("Bob");
+            recPatient.getJournal().newEntry("Testar");
             return recPatient.getJournal().toString();
           }
           else{
