@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -8,24 +10,34 @@ public class Journal {
 		this.entries = new TreeMap<String, String>();
 	}
 	
-	public void newEntry(String dateTime, String nurse) {
-		entries.put(dateTime, nurse);
+	public void newEntry(String info) {
+		LocalDateTime timeNow = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		String formatDateTime = timeNow.format(formatter);
+		entries.put(formatDateTime, info);
 	}
 	
-	public void editEntry(String dateTime, String newString) {
-		entries.replace(dateTime, newString);
+	public void editEntry(String dateTime, String info) {
+		LocalDateTime timeNow = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		String formatDateTime = timeNow.format(formatter);
+		entries.replace(formatDateTime, info);
 	}
 	
-	public void deleteEntry(String date) {
-		entries.remove(date);
+	public void deleteEntry(String dateTime) {
+		entries.remove(dateTime);
 	}
 	
 	public String getEntry(String dateTime) {
 		return entries.get(dateTime);
 	}
 	
+	public void deleteAll() {
+		entries.clear();
+	}
+	
 	public String toString() {
-		return "Hej här är en journal!";
+		return entries.toString();
 	}
 	
 	

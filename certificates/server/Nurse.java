@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Nurse extends Person{
@@ -5,6 +6,7 @@ public class Nurse extends Person{
 	
 	public Nurse(String name, String ssn, String role, String division) {
 		super(name, ssn, role, division);
+		list = new ArrayList<>();
 		this.division = division;
 	}
 	

@@ -7,6 +7,7 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class server implements Runnable {
@@ -26,18 +27,26 @@ public class server implements Runnable {
   private void loadPersons(){
     //All the persons(instead of a database)
     Patient alice = new Patient("Alice", "0001011234", "Patient", "ER");
+    Patient pat = new Patient("Pat", "12", "Patient", "RE");
     Nurse bob = new Nurse("Bob", "0102035678", "Nurse", "ER");
-    Doctor phil = new Doctor("Phil", "9998979876", "Doctor", "ER");
-    GovernmentRep sam = new GovernmentRep("Sam", "0127630000", "GovernmentRep");
+    Nurse bill = new Nurse("Bill", "4224", "Nurse", "RE");
+    Doctor uncle = new Doctor("Uncle", "1234", "Doctor", "ER");
+    Doctor phil = new Doctor("Phil", "9998979876", "Doctor", "RE");
+    GovernmentRep gr = new GovernmentRep("gr", "0127630000", "GovernmentRep");
     
     persons.add(alice);
+    persons.add(pat);
     persons.add(bob);
+    persons.add(bill);
     persons.add(phil);
-    persons.add(sam);
+    persons.add(uncle);
+    persons.add(gr);
 
-    phil.addAsso(alice); //alice blir patient till phil
+    uncle.createAsso(alice); //alice blir patient till uncle
+    phil.createAsso(pat);
     
-    journals.add(alice.getJournal());
+    
+
   }
   
   private String actionHandler(String message, Person p, BufferedReader in, PrintWriter out){
@@ -49,7 +58,8 @@ public class server implements Runnable {
           Journal reqJournal = recPatient.getJournal();
           System.out.println(" P namn och recPatient namn" + " " + p.getName() + " " + recPatient.getName());
           if(reqJournal!=null && authenticator.canRead(p, recPatient)){
-            return "You can read!";
+            recPatient.getJournal().newEntry("Bob");
+            return recPatient.getJournal().toString();
           }
           else{
             return "No reading access!";
@@ -63,7 +73,12 @@ public class server implements Runnable {
           Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
           Journal reqJournal = recPatient.getJournal();
           if(reqJournal!=null && authenticator.canWrite(p, recPatient)){
-            return "You can write!";
+            System.out.println("Enter info: ");
+            Scanner scan = new Scanner(System.in);
+            String info = scan.next();
+            recPatient.getJournal().newEntry(info);
+            scan.close();
+            return "You wrote to: " + recPatient.getName();
           }
           else{
             return "No writing access!";
@@ -77,7 +92,8 @@ public class server implements Runnable {
           Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
           Journal reqJournal = recPatient.getJournal();
           if(reqJournal!=null && authenticator.canDelete(p, recPatient)){
-            return "You can Delete!";
+            recPatient.getJournal().deleteAll();
+            return "You deleted journal of " + recPatient;
           }
           else{
             return "No deleting access!";
@@ -86,16 +102,16 @@ public class server implements Runnable {
         catch(NumberFormatException e) {
           return "The second argument needs to be a number.";
         }
-      case "create"
+      case "create":
       	try {
             Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
             Journal reqJournal = recPatient.getJournal();
             if(reqJournal!=null && authenticator.canCreate(p, recPatient)){
-            	for(Person person : Persons) {
+            	for(Person person : persons) {
             		if(person instanceof Nurse) {
-            			if(person.getDivison().equals(recPatient.getDivision())) {
-            				p.addAssoForNurse(recPatient, person);
-            	             return "You can Create new entry!";
+            			if(person.getDivision().equals(recPatient.getDivision())) {
+                          ((Nurse) person).addAsso(recPatient);
+                          return "You create new entry in journal of " + recPatient;
             			}
             		}
             	}
@@ -105,9 +121,9 @@ public class server implements Runnable {
               return "No access to create new entry!";
             }
       	}
-      	catch{
-            return "The second argument needs to be a number.";
-      	}
+        catch(NumberFormatException e) {
+          return "The second argument needs to be a number.";
+        }
     }
     return "Incorrect input";
   }
