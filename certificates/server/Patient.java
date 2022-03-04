@@ -6,7 +6,7 @@ public class Patient extends Person {
 		super(name, ssn, role, division);
 		this.journal = new Journal();
 	}
-	
+	// Returns patient journal
 	public Journal getJournal() {
 		return this.journal;
 	}

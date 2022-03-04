@@ -9,14 +9,17 @@ public class Doctor extends Person {
 		list = new ArrayList<>();
 	}
 	
+	// Adds patient association to Doctor
 	public void createAsso(Patient patient) {
 		list.add(patient);
 	}
 	
+	// Adds patient association to Nurse
 	public void createAssoForNurse(Patient patient, Nurse nurse) {
 		nurse.addAsso(patient);
 	}
 	
+	// Returns list of patient associations of Doctor
 	public List<Patient> getList() {
 		return list;
 	}

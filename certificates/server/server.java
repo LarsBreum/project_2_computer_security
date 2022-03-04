@@ -21,7 +21,7 @@ public class server implements Runnable {
     persons = new ArrayList<>();
     journals = new ArrayList<>();
   }
-  
+  // Initializes and loads persons into "database" (arraylist), and creates a few associations
   private void loadPersons(){
     //All the persons(instead of a database)
     Patient alice = new Patient("Alice", "0001011234", "Patient", "ER");
@@ -40,12 +40,13 @@ public class server implements Runnable {
     persons.add(uncle);
     persons.add(gr);
 
-    uncle.createAsso(alice); //alice blir patient till uncle
-    bob.addAsso(alice);
-    uncle.createAsso(pat);
+    uncle.createAsso(alice); // Alice blir patient till uncle
+    bob.addAsso(alice); // Bob blir Alice nurse
+    uncle.createAsso(pat); // Pat blir uncles patient
     
   }
   
+  // Handles client actions and requests to server
   private String actionHandler(String message, Person p, BufferedReader in, PrintWriter out){
     String[] words = message.split(" ");
     switch(words[0]){
@@ -133,15 +134,15 @@ public class server implements Runnable {
       String serial = ((X509Certificate) cert[0]).getSerialNumber().toString();
       numConnectedClients++;
       
-      String subjectNameCN = subject.split(" ")[0];
-      String subjectName = subjectNameCN.substring(3, subjectNameCN.length());
+      String subjectNameCN = subject.split(" ")[0]; // Client name from certificate
+      String subjectName = subjectNameCN.substring(3, subjectNameCN.length()); // Client firstname
       
       int i = 0;
       boolean isFound = false;
       Person currentClient = null;
       loadPersons();
       
-      while (!isFound && i<persons.size()) {
+      while (!isFound && i<persons.size()) {  // Searches "database" for client match
         Person p = persons.get(i);
         if (p.getName().equals(subjectName)) {
           currentClient = p;
@@ -150,7 +151,7 @@ public class server implements Runnable {
         i++;
       }
       
-      if (!isFound) {
+      if (!isFound) { // Denies client access if not in "database"
         socket.close();
         numConnectedClients--;
         System.out.println("subjectName: " + subjectName);
@@ -172,7 +173,7 @@ public class server implements Runnable {
       
       String clientMsg = null;
       while ((clientMsg = in.readLine()) != null) {
-        String response = actionHandler(clientMsg, currentClient, in, out); //Kollar det client skriver in!
+        String response = actionHandler(clientMsg, currentClient, in, out); // Client response
         //String rev = new StringBuilder(clientMsg).reverse().toString();
         //System.out.println("received '" + clientMsg + "' from client");
         //System.out.print("sending '" + rev + "' to client...");

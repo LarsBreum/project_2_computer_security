@@ -10,10 +10,12 @@ public class Nurse extends Person{
 		this.division = division;
 	}
 	
+	// Adds patient into nurse list of associations
 	public void addAsso(Patient patient) {
 		list.add(patient);
 	}
 	
+	// Returns list of patient associations of Nurse
 	public List<Patient> getList() {
 		return list;
 	}

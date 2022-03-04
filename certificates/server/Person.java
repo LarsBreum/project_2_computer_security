@@ -14,19 +14,19 @@ public class Person {
 		this.division = division;
 		patients = new HashSet<>();
 	}
-	
+	// Returns person name
 	public String getName() {
 		return name;
 	}
-	
+	// Returns person social security number
 	public String getSsn() {
 		return ssn;
 	}
-	
+	// Returns person role
 	public String getRole() {
 		return role;
 	}
-	
+	// Returns person division
 	public String getDivision() {
 		return division;
 	}
@@ -41,9 +41,7 @@ public class Person {
 		Person p = (Person) o;
 		return name.equals(p.getName());
 	}
-	
 	public String toString() {
-		//StringBuilder sb = new StringBuilder();
 		return "Role: "+ role + "Name: " + name + ", ssn: " + ssn;
 	}
 	
