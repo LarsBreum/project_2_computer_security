@@ -1,2 +1,14 @@
 2022-03-03 20:41:28 ; Patient Alice read own journal
 2022-03-03 20:41:56 ; Patient Alice tried to read journal of  Pat but was denied
+2022-03-04 10:27:57 ; Patient Alice read own journal
+2022-03-04 10:31:09 ; Patient Alice read own journal
+2022-03-04 10:33:01 ; Patient Alice read own journal
+2022-03-04 12:23:05 ; Patient Alice read own journal
+2022-03-04 12:24:41 ; Patient Alice read own journal
+2022-03-04 12:28:05 ; Doctor Uncle created a new record for patient Alice
+2022-03-04 12:28:30 ; Patient Alice read own journal
+2022-03-04 12:29:43 ; Doctor Uncle read journal of patient Alice
+2022-03-04 12:31:59 ; Doctor Uncle created a new record for patient Alice
+2022-03-04 12:32:13 ; Patient Alice read own journal
+2022-03-04 12:34:43 ; Doctor Uncle created a new record for patient Alice
+2022-03-04 12:35:01 ; Patient Alice read own journal

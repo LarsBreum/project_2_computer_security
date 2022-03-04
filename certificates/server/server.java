@@ -54,9 +54,7 @@ public class server implements Runnable {
         try{
           Patient recPatient = (Patient) persons.get(Integer.parseInt(words[1]));
           Journal reqJournal = recPatient.getJournal();
-          System.out.println(" P namn och recPatient namn" + " " + p.getName() + " " + recPatient.getName());
           if(reqJournal!=null && authenticator.canRead(p, recPatient)){
-            recPatient.getJournal().newEntry("Testar");
             return recPatient.getJournal().toString();
           }
           else{
@@ -106,7 +104,8 @@ public class server implements Runnable {
             		if(person instanceof Nurse) {
             			if(person.getDivision().equals(recPatient.getDivision())) {
                           ((Nurse) person).addAsso(recPatient);
-                          return "You create new entry in journal of " + recPatient;
+                          recPatient.getJournal().newEntry(words[2]);
+                          return "You created new entry in journal of " + recPatient;
             			}
             		}
             	}
