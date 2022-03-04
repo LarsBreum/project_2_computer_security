@@ -18,10 +18,7 @@ public class Journal {
 	}
 	
 	public void editEntry(String dateTime, String info) {
-		LocalDateTime timeNow = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		String formatDateTime = timeNow.format(formatter);
-		entries.replace(formatDateTime, info);
+		entries.replace(dateTime, info);
 	}
 	
 	public void deleteEntry(String dateTime) {

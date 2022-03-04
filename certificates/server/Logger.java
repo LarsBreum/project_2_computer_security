@@ -26,7 +26,6 @@ public class Logger {
 		String formatDateTime = timeNow.format(formatter);
 		try {
 			PrintWriter writer = new PrintWriter(new FileWriter(file, true));
-			
 			writer.append(formatDateTime + " ; " + logMessage + "\n");
 			writer.close();
 		} catch (IOException e) {

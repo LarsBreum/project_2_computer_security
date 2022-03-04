@@ -31,22 +31,6 @@ public class Person {
 		return division;
 	}
 	
-	public void addPatient(String p) {
-		patients.add(p);
-	}
-	
-	public boolean isRole(String r) {
-		return role.equals(r);
-	}
-	
-	public boolean isTreating(String p) {
-		return patients.contains(p);
-	}
-	
-	public boolean inDivision(String d) {
-		return division.equals(d);
-	}
-	
 	@Override
 	public int hashCode() {
 		return name.hashCode();
